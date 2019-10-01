@@ -1,84 +1,87 @@
 import React from 'react';
-import TodoList from './components/TodoComponents/TodoList';
-import ToDoForm from './components/TodoComponents/TodoForm';
-import styled from 'styled-components';
+import TodoList from './components/TodoComponents/TodoList'
+import TodoForm from './components/TodoComponents/TodoForm'
 
-const Div = styled.div `
 
-`
-
-const toDoData = [
+const data = [
   {
-    task: 'Walk the Dog',
-    id: 565186156,
-    done: false
+    task:'Go Running',
+    id:'1546',
+    completed:false
   },
   {
-    task: 'Organize Garage',
-    id: 1528817077286,
-    done: false
+    task:'Make Coffee',
+    id:'181132',
+    completed:false
   },
   {
-    task: 'Bake Cookies',
-    id: 1528817084358,
-    done: false
+    task:'Manage Existential Dread',
+    id:'89354',
+    completed:false
   }
 ]
+
 
 class App extends React.Component {
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
   // this component is going to take care of state, and any change handlers you need to work with your state
-  
-  constructor() {
+
+  constructor(){
     super();
     this.state = {
-      task: 'Connor',
-      data: toDoData
-    };
+      list: data
+    }
   }
 
-  toggleItem = id => {
-    this.setState({
-      data: this.state.data.map(item => {
-        if(item.id === id) {
-          return {
-            task: item.task,            
-            done: !item.done
-          };
-      }
-      else {
-        return item;
-      }
-      })
-    });
-  };
+  // * Toggle task 
+    // loop through the array and to find our specific element to toggle !completed
+  toggleTask = id => {
+    console.log(id);
 
-  addItem = itemName => {
+    this.setState({
+      list: this.state.list.map(item => {
+        if (item.id === id){
+          return{
+            ...item,
+            completed: !item.completed
+          }
+        } else{
+          return item;
+        }
+      })
+    })
+  }
+
+
+  // * Add task
+  addItem = taskName => {
     const newItem = {
-      task:itemName,
-      id: Date.now(),
-      done: false
+      task: taskName,
+      id:Date.now(),
+      completed:false
     };
     this.setState({
-      data: [...this.state.data, newItem]
-    });
-  };
+      list: [...this.state.list, newItem]
+    })
+  }
 
+  // * Clear finished tasks 
+  clearFinished = () => {
+    this.setState({
+      list: this.state.list.filter(item => !item.completed)
+    })
+  }
   
 
   render() {
     return (
-      <Div>
-        <div>
-          <h2>Welcome to your Todo App!</h2>
-          <ToDoForm addItem={this.addItem} />
-        </div>
-        <TodoList 
-          data={this.state.data}
-          toggleItem={this.toggleItem}
-        />
-      </Div>
+      <div>
+        <h2>Welcome to your Todo App!</h2>
+        <TodoForm addItem={this.addItem} />
+        <TodoList todoList={this.state.list} toggleTask={this.toggleTask} clearFinished={this.clearFinished} />
+        
+      </div>
     );
   }
 }

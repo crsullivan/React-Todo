@@ -6,16 +6,21 @@ const Div = styled.div `
 `
 
 const Todo = props => {
-    console.log(props)
-  return (
-    <Div
-    className={`item${props.task.done ? ' done' : ''}`}
-    task={props.task} onClick={() => props.toggleItem(props.item.id)}
-    >
-      <p>{props.task}</p>
-    </Div>
-    
-  );
-};
-
-export default Todo;
+  return(
+    <div>
+    {
+         props.todoList.map(item => {
+              return(
+                   <div 
+                   className={`uncompleted${item.completed ? ' completed' : ''}`}
+                    key={item.id} onClick={() => props.toggleTask(item.id)}>
+                        <p>{item.task}</p>
+                        <p>{item.completed}</p>
+                   </div>
+              )
+         })
+    }
+    </div>
+)
+}
+export default Todo
